@@ -19,61 +19,59 @@ clear all;
 
 disp('k-means clustering sample start!!');
 
-data=GetRawData();%¶ƒf[ƒ^‚ğæ“¾‚·‚éŠÖ”
+data=GetRawData();%ç”Ÿãƒ‡ãƒ¼ã‚¿ã‚’å–å¾—ã™ã‚‹é–¢æ•°
 
-%k-means–@‚É‚æ‚éƒNƒ‰ƒXƒ^ƒŠƒ“ƒO
-nCluster=2;%ƒNƒ‰ƒXƒ^‚Ì”
+%k-meansæ³•ã«ã‚ˆã‚‹ã‚¯ãƒ©ã‚¹ã‚¿ãƒªãƒ³ã‚°
+nCluster=2;%ã‚¯ãƒ©ã‚¹ã‚¿ã®æ•°
 [result,means]=kmeansClustering(data,nCluster);
-%ƒNƒ‰ƒXƒ^ƒŠƒ“ƒO‚ÌŒ‹‰Ê‚ğ•\¦
+%ã‚¯ãƒ©ã‚¹ã‚¿ãƒªãƒ³ã‚°ã®çµæœã‚’è¡¨ç¤º
 ShowClusteringResult(result,means,nCluster);
 
 function [result,means]=kmeansClustering(data,nCluster)
-%k-means‚ğg‚Á‚ÄƒNƒ‰ƒXƒ^ƒŠƒ“ƒO‚ğÀ{‚·‚é•û–@
+%k-meansã‚’ä½¿ã£ã¦ã‚¯ãƒ©ã‚¹ã‚¿ãƒªãƒ³ã‚°ã‚’å®Ÿæ–½ã™ã‚‹æ–¹æ³•
 
-%‰ŠúƒNƒ‰ƒXƒ^ƒŠƒ“ƒO ƒ‰ƒ“ƒ_ƒ€‚ÉƒNƒ‰ƒX‚ğU‚è•ª‚¯‚é
+%åˆæœŸã‚¯ãƒ©ã‚¹ã‚¿ãƒªãƒ³ã‚° ãƒ©ãƒ³ãƒ€ãƒ ã«ã‚¯ãƒ©ã‚¹ã‚’æŒ¯ã‚Šåˆ†ã‘ã‚‹
 result=[data randi(nCluster,[length(data(:,1)),1])];
 
 while 1
     means=[];
     for i=1:nCluster
-        %ŠeƒNƒ‰ƒXƒ^‚Ì•½‹Ï’l‚ğŒvZ
+        %å„ã‚¯ãƒ©ã‚¹ã‚¿ã®å¹³å‡å€¤ã‚’è¨ˆç®—
         means=[means;mean(result(result(:,3)==i,1:2))];
     end
     
-    %ƒNƒ‰ƒXƒ^ƒŠƒ“ƒO‚ÌŒ‹‰Ê‚ğ•\¦
+    %ã‚¯ãƒ©ã‚¹ã‚¿ãƒªãƒ³ã‚°ã®çµæœã‚’è¡¨ç¤º
     ShowClusteringResult(result,means,nCluster);
     
-    %Šeƒf[ƒ^‚ğ•½‹Ï’l‚©‚ç‹ß‚¢‡‚ÉÄƒNƒ‰ƒXƒ^ƒŠƒ“ƒO
-    nUpdate=0;%ƒNƒ‰ƒXƒ^‚ªXV‚³‚ê‚½”
+    %å„ãƒ‡ãƒ¼ã‚¿ã‚’å¹³å‡å€¤ã‹ã‚‰è¿‘ã„é †ã«å†ã‚¯ãƒ©ã‚¹ã‚¿ãƒªãƒ³ã‚°
+    nUpdate=0;%ã‚¯ãƒ©ã‚¹ã‚¿ãŒæ›´æ–°ã•ã‚ŒãŸæ•°
     for j=1:length(result(:,1))
         
-        %Šeƒf[ƒ^‚ÆŠe•½‹Ï’l‚Ü‚Å‚Ì‹——£‚ğŒvZ
+        %å„ãƒ‡ãƒ¼ã‚¿ã¨å„å¹³å‡å€¤ã¾ã§ã®è·é›¢ã‚’è¨ˆç®—
         d=[];
         for k=1:nCluster
             d=[d norm(result(j,1:2)-means(k,:))];
         end
-        [c,i]=min(d);%ˆê”Ô‹——£‚Ì¬‚³‚¢ƒNƒ‰ƒXƒ^‚ÌID‚ğŒvZ
+        [c,i]=min(d);%ä¸€ç•ªè·é›¢ã®å°ã•ã„ã‚¯ãƒ©ã‚¹ã‚¿ã®IDã‚’è¨ˆç®—
         if result(j,3)~=i 
-            result(j,3)=i;%ƒNƒ‰ƒXƒ^‚ğXV
+            result(j,3)=i;%ã‚¯ãƒ©ã‚¹ã‚¿ã‚’æ›´æ–°
             nUpdate=nUpdate+1;
         end
     end
     
     if nUpdate==0
-        break;%ƒNƒ‰ƒXƒ^‚ª•Ï‰»‚µ‚È‚­‚È‚Á‚½‚çI—¹
+        break;%ã‚¯ãƒ©ã‚¹ã‚¿ãŒå¤‰åŒ–ã—ãªããªã£ãŸã‚‰çµ‚äº†
     end
-    
-    pause;
 end
 
 function ShowClusteringResult(result,means,nCluster)
-%ƒNƒ‰ƒXƒ^ƒŠƒ“ƒO‚ÌŒ‹‰Ê‚ğƒOƒ‰ƒt‚É•`‰æ‚·‚éŠÖ”
+%ã‚¯ãƒ©ã‚¹ã‚¿ãƒªãƒ³ã‚°ã®çµæœã‚’ã‚°ãƒ©ãƒ•ã«æç”»ã™ã‚‹é–¢æ•°
 hold off;
 
-%ƒOƒ‰ƒt‚ÌF—p‚Ìƒf[ƒ^‚ğì¬
+%ã‚°ãƒ©ãƒ•ã®è‰²ç”¨ã®ãƒ‡ãƒ¼ã‚¿ã‚’ä½œæˆ
 cc=hsv(nCluster);
 
-%ŠeƒNƒ‰ƒXƒ^–ˆ‚Éƒf[ƒ^‚ğ•`‰æ
+%å„ã‚¯ãƒ©ã‚¹ã‚¿æ¯ã«ãƒ‡ãƒ¼ã‚¿ã‚’æç”»
 for i=1:nCluster
     data=result(result(:,3)==i,1:2);
     plot(data(:,1),data(:,2),'.','Color',cc(i,:)); hold all;
@@ -85,10 +83,10 @@ hold on;
 	
 
 function data=GetRawData()
-%‹[—ƒf[ƒ^‚ÌƒNƒ‰ƒXƒ^[‚Ì’†S‚ÆŒë·—Ê
+%æ“¬ä¼¼ãƒ‡ãƒ¼ã‚¿ã®ã‚¯ãƒ©ã‚¹ã‚¿ãƒ¼ã®ä¸­å¿ƒã¨èª¤å·®é‡
 nSample=[0 0 2;
         10 10 5];
-ndata=30;%ˆê‚Â‚ÌƒNƒ‰ƒXƒ^‚ÉŠÖ‚·‚éƒf[ƒ^“_
+ndata=30;%ä¸€ã¤ã®ã‚¯ãƒ©ã‚¹ã‚¿ã«é–¢ã™ã‚‹ãƒ‡ãƒ¼ã‚¿ç‚¹
 data=[];
 
 for nc=1:length(nSample(:,1))
@@ -97,7 +95,7 @@ for nc=1:length(nSample(:,1))
         data=[data;xy];
     end
 end
-data=sortrows(data,2);%ƒf[ƒ^‚ğƒ\[ƒg‚µ‚Ä¬‚º‚é
+data=sortrows(data,2);%ãƒ‡ãƒ¼ã‚¿ã‚’ã‚½ãƒ¼ãƒˆã—ã¦æ··ãœã‚‹
     
 
 
